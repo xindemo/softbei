@@ -42,6 +42,7 @@ avg_count = pd.concat([avg_fee, count], axis=1)
 
 df2 = avg_count
 
+# 对原始数据进行均值方差标准化
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaler.fit(df2)
@@ -56,9 +57,11 @@ avg_fee_count = np.array([count.size, fee, count_n])
 index = ["居民户数", "平均缴费金额", "平均缴费次数"]
 column = ["金额/次数/户数"]
 avg_fee_count = pd.DataFrame(avg_fee_count, index = index, columns=column)
+# avg_fee_count中保存了三个值：居民户数、平均缴费金额、平均缴费次数
 avg_fee_count.to_csv("居民客户的用电缴费习惯分析1.csv")
 
 avg_count['客户类型'] = avg_count[['缴费金额（元）', '缴费次数']].apply(lambda x : judge_type(list(x), fee, count_n),axis=1)
+# avg_count中保存了每户居民的 平均缴费金额、缴费次数、客户类型
 avg_count.to_csv("居民客户的用电缴费习惯分析2.csv")
 
 label = avg_count.loc[:, "客户类型"]
@@ -72,6 +75,7 @@ data3 = data2[data2["客户类型"] != "高价值型客户"]
 data3["价值分数"] = data3["缴费金额（元）"]+data3["缴费次数"]
 sort_data3 = data3.sort_values(by="价值分数", ascending=False)
 most_value_top5 = sort_data3.iloc[0:5, :]
+# most_value_top5为通过标准化后的数据排序后得到最有可能成为高价值型客户的TOP5
 most_value_top5.to_csv("居民客户的用电缴费习惯分析3.csv")
 X = data2.iloc[:, :2]
 y = data2.iloc[:, 2]
