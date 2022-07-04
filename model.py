@@ -4,11 +4,13 @@ Created on Fri Jul  1 17:18:09 2022
 
 @author: Administrator
 """
+# 导入模型中需要用到的包
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+# 打上客户类型标签
 def judge_type(x, fee, count):
     if((x[0]>=fee) & (x[1]>=count)):
         type = "高价值型客户"
@@ -19,18 +21,7 @@ def judge_type(x, fee, count):
     else:
         type = "低价值型客户"
     return type
-def judge_type_int(x, fee, count):
-    if((x[0]>=fee) & (x[1]>=count)):
-        type = 0
-    elif((x[0]>=fee) & (x[1]<count)):
-        type = 1
-    elif((x[0]<fee) & (x[1]>=count)):
-        type = 2
-    else:
-        type = 3
-    return type
-def value_sum(x, y):
-    return x+y
+
 data = pd.read_excel("C:\\Users\\Administrator\\Desktop\\1647848272130494.xlsx")
 
 df = pd.DataFrame(data)
@@ -65,11 +56,10 @@ avg_fee_count = np.array([count.size, fee, count_n])
 index = ["居民户数", "平均缴费金额", "平均缴费次数"]
 column = ["金额/次数/户数"]
 avg_fee_count = pd.DataFrame(avg_fee_count, index = index, columns=column)
-#avg_fee_count.to_csv("C:\\Users\\Administrator\\Desktop\\居民客户的用电缴费习惯分析1.csv")
-#df2 = df.sum()
+avg_fee_count.to_csv("居民客户的用电缴费习惯分析1.csv")
 
 avg_count['客户类型'] = avg_count[['缴费金额（元）', '缴费次数']].apply(lambda x : judge_type(list(x), fee, count_n),axis=1)
-#avg_count.to_csv("C:\\Users\\Administrator\\Desktop\\居民客户的用电缴费习惯分析2.csv")
+avg_count.to_csv("居民客户的用电缴费习惯分析2.csv")
 
 label = avg_count.loc[:, "客户类型"]
 
@@ -82,7 +72,7 @@ data3 = data2[data2["客户类型"] != "高价值型客户"]
 data3["价值分数"] = data3["缴费金额（元）"]+data3["缴费次数"]
 sort_data3 = data3.sort_values(by="价值分数", ascending=False)
 most_value_top5 = sort_data3.iloc[0:5, :]
-most_value_top5.to_csv("C:\\Users\\Administrator\\Desktop\\居民客户的用电缴费习惯分析3.csv")
+most_value_top5.to_csv("居民客户的用电缴费习惯分析3.csv")
 X = data2.iloc[:, :2]
 y = data2.iloc[:, 2]
 y2 = pd.DataFrame(label)
