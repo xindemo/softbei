@@ -87,8 +87,11 @@ y3 = y2.values
 
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
+# 绘制原始数据点图
 plt.scatter(X.iloc[:,0], X.iloc[:,1])
 plt.title("row data")
+
+#通过inertia 和 silhoutte 确定聚类簇数
 inertia_scores = []
 sil_scores = []
 for n in range(2, 10):
@@ -105,11 +108,9 @@ model.fit(X)
 y_hat = model.predict(X)
 c = model.labels_
 
-#Fs = pd.Series(c, index=data2.index)
-#Fs = Fs.sort_values(ascending=True)
 
 #画图，把原始数据和最终预测数据在图上表现出来
-'''
+
 cm = mpl.colors.ListedColormap(list('rgby'))
 plt.figure(figsize=(15,9), facecolor='w')
 plt.subplot(121)  
@@ -121,4 +122,4 @@ plt.scatter(X.iloc[:, 0], X.iloc[:, 1], c=y_hat, s=30, cmap=cm, edgecolors='none
 plt.title('K-Means算法聚类结果')  
 plt.grid(True)  
 plt.show()
-'''
+
